@@ -1,0 +1,9 @@
+
+FROM debian:bullseye
+
+COPY ../script/nginx/setup.sh /
+COPY ../data/server.conf /tmp/.
+COPY ../data/index.html /tmp/.
+
+CMD "/bin/bash"
+
