@@ -5,5 +5,5 @@ COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 RUN sh /tmp/setup.sh
 
-CMD ["", "-g", ""]
+CMD ["nginx", "-g", "daemon off;"]
 
