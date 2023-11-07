@@ -30,29 +30,37 @@ else
 	sed -i "s/^listen.*/listen=wordpress:9000/" $INI_FILE
 fi
 
+if [ ! -d "/run/php" ]; then
+	mkdir "/run/php"
+fi
+
 # wordpress configuration
 
 cd /var/www/wordpress
 
+# mv 'wp-config-sample.php' 'wp-config.php'
+
 wp config create \
-	--allow-root \
 	--dbname=$MYSQL_DATABASE \
 	--dbuser=$MYSQL_USER \
 	--dbpass=$MYSQL_PASSWORD \
 	--dbhost=$MYSQL_HOST \
-	--path='/var/www/wordpress'
+	--path='/var/www/wordpress' \
+	--allow-root
 
 wp core install \
 	--url=$DOMAIN_NAME \
 	--title=$WP_TITLE \
 	--admin_user=$WP_ADMIN \
 	--admin_password=$WP_ADMIN_PASSWORD \
-	--admin_email=$WP_ADMIN_EMAIL
+	--admin_email=$WP_ADMIN_EMAIL \
+	--allow-root
 
 wp user create \
 	$WP_USER \
 	$WP_USER_EMAIL \
 	--user_pass=$WP_USER_PASSWORD \
 	--role=$WP_USER_ROLE \
-	--porcelain
+	--porcelain \
+	--allow-root
 
