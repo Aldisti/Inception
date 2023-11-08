@@ -1,0 +1,7 @@
+mariadb -e "CREATE DATABASE IF NOT EXISTS inceptionDB;"
+mariadb -e "CREATE USER IF NOT EXISTS 'mysql'@'%' IDENTIFIED BY 'password';"
+mariadb -e "GRANT ALL PRIVILEGES ON inceptionDB.* TO 'mysql'@'%' IDENTIFIED BY 'password';"
+mariadb -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';"
+mariadb -uroot -ppassword -e "FLUSH PRIVILEGES;"
+mysqladmin -uroot -ppassword shutdown
+

@@ -1,9 +1,9 @@
 # download wordpress
 
-cd /var/www
-tar -xzf wordpress-6.3.2.tar.gz
-rm -rf wordpress-6.3.2.tar.gz
-chown -R root:root /var/www/wordpress
+#cd /var/www
+#tar -xzf wordpress-6.3.2.tar.gz
+#rm -rf wordpress-6.3.2.tar.gz
+#chown -R root:root /var/www/wordpress
 
 # download CLI
 # wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -44,7 +44,7 @@ echo "before 'config create'"
 wp config create --dbname=$MYSQL_DATABASE \
 	--dbuser=$MYSQL_USER \
 	--dbpass=$MYSQL_PASSWORD \
-	--dbhost=$MYSQL_HOST \
+	--dbhost=mariadb:3306 \
 	--path='/var/www/wordpress' \
 	--allow-root
 
