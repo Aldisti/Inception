@@ -1,8 +1,5 @@
-# update and install packages
-apt update && apt upgrade -y
-apt install vim curl procps openssl nginx -y
 
-# TSL protocol setup
+# TLS protocol setup
 SSL_PATH="/etc/nginx/ssl"
 INFO="/C=IT/ST=Lazio/L=Rome/O=42/OU=42/CN=$DOMAIN_NAME/UID=adi-stef"
 mkdir -p "$SSL_PATH"

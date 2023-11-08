@@ -5,13 +5,13 @@ services:
     container_name: mariadb
     networks:
       - inception
-    env_file: .env
     build:
       context: requirements/mariadb
       dockerfile: Dockerfile
+    env_file: .env
     volumes:
       - mariadb:/var/lib/mysql
-    restart: always
+    restart: no
     expose:
       - "3306"
 
@@ -29,7 +29,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "443:443"
-    restart: unless-stopped
+    restart: no
 
   wordpress:
     container_name: wordpress
@@ -45,21 +45,21 @@ services:
       - mariadb
     expose:
       - "9000"
-    restart: unless-stopped
+    restart: no
 
 volumes:
   wordpress:
     driver: local
-    driver_otps:
+    driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/path/to/data/wordpress'
+      device: '/wordpress'
   mariadb:
     driver: local
-    driver_otps:
+    driver_opts:
       type: 'none'
       o: 'bind'
-      device: '/path/to/data/mariadb'
+      device: '/mariadb'
 
 networks:
   inception:
