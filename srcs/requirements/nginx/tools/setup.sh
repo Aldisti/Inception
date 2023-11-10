@@ -1,9 +1,13 @@
 
 # TLS protocol setup
-SSL_PATH="/etc/nginx/ssl"
-INFO="/C=IT/ST=Lazio/L=Rome/O=42/OU=42/CN=$DOMAIN_NAME/UID=adi-stef"
-mkdir -p "$SSL_PATH"
-openssl -req -x509 -nodes -out "$SSL_PATH/certificate.ctr" -keyout "$SSL_PATH/private.key" -subj "$INFO"
+MY_SSL_PATH="/etc/nginx/ssl"
+MY_INFO="/C=IT/ST=Lazio/L=Rome/O=42/OU=42/CN=$DOMAIN_NAME/UID=adi-stef"
+if [ ! -d "$MY_SSL_PATH" ]; then
+	mkdir -p "$MY_SSL_PATH"
+fi
+openssl req -x509 -nodes -out "$MY_SSL_PATH/certificate.ctr" -keyout "$MY_SSL_PATH/private.key" -subj "$MY_INFO"
+
+ls -a "$MY_SSL_PATH || $MY_INFO"
 
 # NGINX configuration
 mkdir -p "/var/run/nginx"
