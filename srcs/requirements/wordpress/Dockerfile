@@ -10,22 +10,23 @@ RUN chown -R root:root /var/www/wordpress
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -P /usr/local/bin
 
 COPY ./tools/setup.sh /tmp/setup.sh
+COPY ./conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 
-ENV DOMAIN_NAME=adi-stef.42.fr
-ENV WP_TITLE=title
-ENV WP_ADMIN=adi-stef
-ENV WP_ADMIN_PASSWORD=password
-ENV WP_ADMIN_EMAIL=alessandrodiste99@gmail.com
-
-ENV WP_USER=pino
-ENV WP_USER_PASSWORD=password
-ENV WP_USER_EMAIL=aldisti.games@gmail.com
-ENV WP_USER_ROLE=author
-
-ENV MYSQL_ROOT_PASSWORD=password
-ENV MYSQL_USER=adi-stef
-ENV MYSQL_PASSWORD=password
-ENV MYSQL_DATABASE=inceptionDB
+# ENV DOMAIN_NAME=adi-stef.42.fr
+# ENV WP_TITLE=title
+# ENV WP_ADMIN=adi-stef
+# ENV WP_ADMIN_PASSWORD=password
+# ENV WP_ADMIN_EMAIL=alessandrodiste99@gmail.com
+# 
+# ENV WP_USER=pino
+# ENV WP_USER_PASSWORD=password
+# ENV WP_USER_EMAIL=aldisti.games@gmail.com
+# ENV WP_USER_ROLE=author
+# 
+# ENV MYSQL_ROOT_PASSWORD=password
+# ENV MYSQL_USER=adi-stef
+# ENV MYSQL_PASSWORD=password
+# ENV MYSQL_DATABASE=inceptionDB
 
 ENTRYPOINT ["bash", "/tmp/setup.sh"]
 
