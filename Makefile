@@ -13,17 +13,17 @@
 NAME = inception
 
 all: prepare
-	docker compose -f ./srcs/docker-compose.yml --no-cache build
-	docker compose -f ./srcs/docker-compose.yml up
+	@docker compose -f ./srcs/docker-compose.yml --no-cache build
+	@docker compose -f ./srcs/docker-compose.yml up
 
 prepare:
-	sh ./srcs/tools/setup.sh
+	@bash ./srcs/tools/setup.sh
 
 clean:
-	bash ./srcs/tools/clean.sh
+	@bash ./srcs/tools/clean.sh
 
 fclean: clean
-	bash ./srcs/tools/fclean.sh
+	@bash ./srcs/tools/fclean.sh
 
 re: fclean re
 
