@@ -88,10 +88,23 @@ ft_update_nginx() {
 	sed -i "s/UID=.*\"/UID=$STP_ADMIN\"/g" "$STP_NGINX_DOCKERFILE"
 }
 
+ft_update_hosts() {
+	if sudo grep -q "^$STP_IP[[:space:]]*$STP_DOMAIN$" "$STP_HOSTS"; then
+		return 0
+	fi
+	sudo sed -i "s/^$/$STP_IP\t$STP_DOMAIN\n/" "$STP_HOSTS"
+}
+
+STP_IP="127.0.0.1"
 STP_ENV="./srcs/.env"
+STP_HOSTS="/etc/hosts"
 STP_COMPOSE="./srcs/docker-compose.yml"
 STP_NGINX_CONF="./srcs/requirements/nginx/conf/nginx.conf"
 STP_NGINX_DOCKERFILE="./srcs/requirements/nginx/Dockerfile"
+
+if [ -n "$(docker images | grep "mariadb")" ]; then
+	echo "info in cache"; exit 0
+fi
 
 if [ ! -f "$STP_ENV" ]; then
 	touch "$STP_ENV"
@@ -140,4 +153,6 @@ ft_update_compose
 echo "docker-compose updated successfully"
 
 ft_update_nginx
+
+ft_update_hosts
 

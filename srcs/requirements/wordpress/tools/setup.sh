@@ -44,5 +44,7 @@ if [ ! -f "wp-config.php" ]; then
 		--allow-root
 fi
 
+unset MYSQL_PASSWORD WP_ADMIN_PASSWORD WP_USER_PASSWORD
+
 /usr/sbin/php-fpm8.2 -F
 

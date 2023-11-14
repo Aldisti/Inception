@@ -13,7 +13,8 @@
 NAME = inception
 
 $(NAME): prepare
-	@docker compose -f ./srcs/docker-compose.yml up
+	@docker compose -f ./srcs/docker-compose.yml --env-file "./srcs/.env" up
+	@touch $(NAME)
 
 all: $(NAME)
 
