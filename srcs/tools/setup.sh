@@ -29,6 +29,7 @@ ft_get_user() {
 ft_get_mysql() {
 	ans="$(tr A-Z a-z <<< "$1")"
 	if [ "$ans" = "y" ] || [ "$ans" = "yes" ]; then
+		read -sp "What's the root password? " STP_MYSQL_ROOT_PASSWORD
 		read -p "What's the database user username? " STP_MYSQL_USER
 		read -sp "What's the database user password? " STP_MYSQL_PASSWORD
 		echo
@@ -60,7 +61,7 @@ ft_change_value() {
 	val="$2"
 	sep="$3"
 	file="$4"
-	if [ -z "$attr" ] || [ -z "$val" ] || [ -z "$sep" ] || [ -z "$file" ]; then
+	if [ -z "$attr" ] || [ -z "$val" ] || [ -z "$file" ]; then
 		echo "Error\n'ft_change_attr' void param"; exit 1
 	fi
 	grep -q "$attr$sep" "$file" && \
@@ -75,11 +76,22 @@ ft_update_compose() {
 	if [ ! -d "/home/$(whoami)/data/wordpress" ]; then
 		mkdir -p "/home/$(whoami)/data/wordpress"
 	fi
-	sed -i "s/\/login\/data/\/$(whoami)\/data/" "$STP_COMPOSE"
+	sed -i "s" "$STP_COMPOSE"
+}
+
+ft_update_nginx() {
+	if [ ! -f "$STP_NGINX_CONF" ]; then
+		return 1
+	fi
+	sed -i "s/server_name.*;/server_name $STP_DOMAIN;/g" "$STP_NGINX_CONF"
+	sed -i "s/CN=.*\//CN=$STP_DOMAIN\//g" "$STP_NGINX_DOCKERFILE"
+	sed -i "s/UID=.*\"/UID=$STP_ADMIN\"/g" "$STP_NGINX_DOCKERFILE"
 }
 
 STP_ENV="./srcs/.env"
 STP_COMPOSE="./srcs/docker-compose.yml"
+STP_NGINX_CONF="./srcs/requirements/nginx/conf/nginx.conf"
+STP_NGINX_DOCKERFILE="./srcs/requirements/nginx/Dockerfile"
 
 if [ ! -f "$STP_ENV" ]; then
 	touch "$STP_ENV"
@@ -94,8 +106,8 @@ ft_get_user "$ans"
 read -p "Do you want to use different database credentials? [y/N] " ans
 ft_get_mysql "$ans"
 
-set_value "STP_ADMIN" "$(whoami)"
 set_value "STP_TITLE" "title"
+set_value "STP_ADMIN" "$(whoami)"
 set_value "STP_ADMIN_PASSWORD" "password"
 set_value "STP_ADMIN_EMAIL" "$STP_ADMIN@gmail.com"
 set_value "STP_USER" "user"
@@ -106,8 +118,9 @@ set_value "STP_MYSQL_USER" "user"
 set_value "STP_MYSQL_PASSWORD" "password"
 set_value "STP_MYSQL_ROOT_PASSWORD" "$STP_MYSQL_PASSWORD"
 set_value "STP_MYSQL_DATABASE" "inception"
+set_value "STP_DOMAIN" "$STP_ADMIN.42.$(echo "$LC_TIME" | head -c 2)"
 
-ft_change_value "DOMAIN_NAME" "$STP_ADMIN.42.it" "=" "$STP_ENV"
+ft_change_value "DOMAIN_NAME" "$STP_DOMAIN" "=" "$STP_ENV"
 ft_change_value "WP_TITLE" "$STP_TITLE" "=" "$STP_ENV"
 ft_change_value "WP_ADMIN" "$STP_ADMIN" "=" "$STP_ENV"
 ft_change_value "WP_ADMIN_PASSWORD" "$STP_ADMIN_PASSWORD" "=" "$STP_ENV"
@@ -124,6 +137,8 @@ ft_change_value "MYSQL_DATABASE" "$STP_MYSQL_DATABASE" "=" "$STP_ENV"
 echo "enviroment variables updated successfully"
 
 ft_update_compose
-
 echo "docker-compose updated successfully"
+
+ft_update_nginx
+
 
