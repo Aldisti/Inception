@@ -76,7 +76,7 @@ ft_update_compose() {
 	if [ ! -d "/home/$(whoami)/data/wordpress" ]; then
 		mkdir -p "/home/$(whoami)/data/wordpress"
 	fi
-	sed -i "s" "$STP_COMPOSE"
+	sed -i "s_/home/.*/data_/home/$(whoami)/data_" "$STP_COMPOSE"
 }
 
 ft_update_nginx() {
@@ -140,5 +140,4 @@ ft_update_compose
 echo "docker-compose updated successfully"
 
 ft_update_nginx
-
 

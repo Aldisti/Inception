@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOCKER_PATH="../docker-compose.yml"
+DOCKER_PATH="./srcs/tools/docker-compose.yml"
 
 images="$(docker images -a | \
 	grep 'mariadb\|nginx\|wordpress' | \
@@ -27,6 +27,4 @@ fi
 echo "--> removing volumes' files"
 rm -rf "$HOME/data/mariadb/*" "$HOME/data/wordpress/*"
 echo "--> volumes' files removed [$?]"
-
-
 
