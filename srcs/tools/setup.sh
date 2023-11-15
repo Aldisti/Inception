@@ -20,10 +20,10 @@ ft_update_nginx() {
 }
 
 ft_update_hosts() {
-	if sudo grep -q "^$STP_IP[[:space:]]*$DOMAIN_NAME$" "$STP_HOSTS"; then
+	if grep -q "^$STP_IP[[:space:]]*$DOMAIN_NAME$" "$STP_HOSTS"; then
 		return 0
 	fi
-	sudo sed -i "0,/^$/ s/^$/$STP_IP\t$DOMAIN_NAME\n/" "$STP_HOSTS"
+	sudo sed -i "0,/^$/ s/^$/$STP_IP $DOMAIN_NAME\n/" "$STP_HOSTS"
 }
 
 STP_IP="127.0.0.1"
