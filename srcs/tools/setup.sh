@@ -26,8 +26,8 @@ ft_update_hosts() {
 	sudo sed -i "0,/^$/ s/^$/$STP_IP $DOMAIN_NAME\n/" "$STP_HOSTS"
 }
 
-STP_IP="127.0.0.1"
-STP_ENV="$PWD/srcs/.env"
+STP_IP="127.0.2.1"
+STP_ENV="./srcs/.env"
 STP_HOSTS="/etc/hosts"
 STP_COMPOSE="./srcs/docker-compose.yml"
 STP_NGINX_CONF="./srcs/requirements/nginx/conf/nginx.conf"
@@ -59,8 +59,7 @@ for var in ${STP_VARS[@]}; do
 	else
 		declare "$var=$tmp"
 	fi
-done
-echo "'.env' updated"
+done && echo "'.env' updated"
 
 ft_update_compose && echo "'docker-compose' updated"
 

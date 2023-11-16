@@ -3,22 +3,23 @@
 service mariadb start && \
 
 mariadb -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
-sleep .1
+sleep .15
 
 mariadb -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';"
-sleep .1
+sleep .15
 
 mariadb -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
-sleep .1
+sleep .15
 
 mariadb -uroot -p$MYSQL_ROOT_PASSWORD -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';"
-sleep .1
+sleep .15
 
 mariadb -uroot -p$MYSQL_ROOT_PASSWORD -e "FLUSH PRIVILEGES;"
-sleep .1
+sleep .15
 
 mysqladmin -uroot -p$MYSQL_ROOT_PASSWORD shutdown
 
-unset MYSQL_PASSWORD MYSQL_ROOT_PASSWORD
+unset MYSQL_PASSWORD MYSQL_ROOT_PASSWORD WP_ADMIN_PASSWORD WP_USER_PASSWORD
 
 exec mysqld_safe
+

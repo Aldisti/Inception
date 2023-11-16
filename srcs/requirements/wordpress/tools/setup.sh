@@ -1,30 +1,23 @@
-# download wordpress
-
 chmod +x /usr/local/bin/wp-cli.phar
-
-# php configuration
-
 if [ ! -d "/run/php" ]; then
 	mkdir "/run/php"
 fi
-
-# wordpress configuration
 
 cd /var/www/wordpress
 
 sleep 5
 
 if [ ! -f "wp-config.php" ]; then
-	echo "--> 'config create'"
+	echo "--> config create"
 	wp-cli.phar config create \
 		--dbname=$MYSQL_DATABASE \
 		--dbuser=$MYSQL_USER \
 		--dbpass=$MYSQL_PASSWORD \
 		--dbhost=mariadb:3306 \
-		--path='/var/www/wordpress' \
+		--path="/var/www/wordpress" \
 		--allow-root
 
-	echo "--> 'core install'"
+	echo "--> core install"
 	wp-cli.phar core install \
 		--url=$DOMAIN_NAME \
 		--title=$WP_TITLE \
@@ -34,7 +27,7 @@ if [ ! -f "wp-config.php" ]; then
 		--skip-email \
 		--allow-root
 
-	echo "--> 'user create'"
+	echo "--> user create"
 	wp-cli.phar user create \
 		$WP_USER \
 		"$WP_USER_EMAIL" \
@@ -42,9 +35,11 @@ if [ ! -f "wp-config.php" ]; then
 		--role=$WP_USER_ROLE \
 		--porcelain \
 		--allow-root
+else
+	echo "--> wp already configured"
 fi
 
-unset MYSQL_PASSWORD WP_ADMIN_PASSWORD WP_USER_PASSWORD
+unset MYSQL_PASSWORD WP_ADMIN_PASSWORD WP_USER_PASSWORD MYSQL_ROOT_PASSWORD
 
 /usr/sbin/php-fpm8.2 -F
 
