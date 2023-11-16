@@ -14,7 +14,6 @@ NAME = inception
 
 $(NAME): prepare
 	@docker compose -f ./srcs/docker-compose.yml --env-file "./srcs/.env" up
-	@touch $(NAME)
 
 all: $(NAME)
 
@@ -26,10 +25,9 @@ clean:
 
 fclean: clean
 	@bash ./srcs/tools/fclean.sh
-	@rm -f $(NAME)
 
 re: fclean re
 
 
-.PHONY: all prepare clean fclean re
+.PHONY: prepare clean fclean re
 
